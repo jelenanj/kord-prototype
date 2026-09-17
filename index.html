@@ -1124,6 +1124,54 @@
   .btn-secondary svg { flex-shrink: 0; color: var(--icon-muted); }
   .drawer-footer .spacer { flex: 1; }
 
+  /* Price composite field — [0.00 €/sat] [Satnica ⌄] */
+  .price-field-row {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .price-input-wrap {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+    background: var(--surface-default);
+    border: 1px solid var(--border-default);
+    border-radius: var(--r-s);
+    overflow: hidden;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .price-input-wrap:focus-within {
+    border-color: var(--border-primary);
+    box-shadow: 0 0 0 3px rgba(242,101,0,0.12);
+  }
+  .price-input-wrap input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text-body);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  .price-input-wrap input::placeholder { color: var(--text-placeholder); }
+  .price-unit-pill {
+    display: inline-flex; align-items: center;
+    padding: 0 14px;
+    background: var(--surface-muted);
+    color: var(--text-heading);
+    font-size: 13px;
+    font-weight: 500;
+    border-left: 1px solid var(--border-subtle);
+  }
+  .price-scope-dropdown {
+    min-width: 120px;
+    height: 42px;
+  }
+
   /* ---------- Wizard (Nove smjene, 4 koraka, full-page) ---------- */
   .wizard-overlay {
     position: fixed; inset: 0;
@@ -2541,7 +2589,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M5 10l7-7 7 7M4 21h16"/></svg>
               Uvezi
             </button>
-            <button class="btn-primary" type="button">
+            <button class="btn-primary" type="button" id="btnNovaLokacija">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
               Nova lokacija
             </button>
@@ -3382,6 +3430,85 @@
     <div class="spacer"></div>
     <button class="btn-secondary" type="button" id="locDrawerCancel">Odustani</button>
     <button class="btn-primary" type="button" id="locDrawerSave">Spremi</button>
+  </footer>
+</aside>
+
+<!-- Nova lokacija drawer -->
+<div class="drawer-overlay" id="novaLokOverlay" aria-hidden="true"></div>
+<aside class="drawer" id="novaLokDrawer" role="dialog" aria-modal="true" aria-labelledby="novaLokDrawerTitle" aria-hidden="true">
+  <header class="drawer-header">
+    <div class="drawer-title">
+      <h2 id="novaLokDrawerTitle">Nova lokacija</h2>
+    </div>
+    <button class="drawer-close" type="button" aria-label="Zatvori" id="novaLokDrawerClose">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </header>
+
+  <div class="drawer-body">
+    <div class="form-group">
+      <label class="form-label" for="novaLokNameInput">Naziv <span class="req">*</span></label>
+      <div class="form-input-wrap">
+        <input type="text" id="novaLokNameInput" placeholder="Metro">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="novaLokAddressInput">Adresa <span class="req">*</span></label>
+      <div class="form-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <input type="text" id="novaLokAddressInput" placeholder="Slavonska avenija 99">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Oznake</label>
+      <div class="people-select" id="novaLokTagsSelect">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--icon-muted); flex-shrink: 0"><path d="M20 12l-8 8-8-8V4h8z"/><circle cx="9" cy="9" r="1.5"/></svg>
+        <button class="people-add-btn" type="button" id="novaLokTagAdd">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Dodajte oznake
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Podružnice</label>
+      <div class="people-select" id="novaLokPodrSelect">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--icon-muted); flex-shrink: 0"><circle cx="12" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M12 8v3M12 11l-6 5M12 11l6 5"/></svg>
+        <button class="people-add-btn" type="button" id="novaLokPodrAdd">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Dodajte podružnice
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="novaLokCijenaInput">Cijena <span class="req">*</span></label>
+      <div class="price-field-row">
+        <div class="price-input-wrap">
+          <input type="text" id="novaLokCijenaInput" value="0.00" inputmode="decimal">
+          <span class="price-unit-pill">€/sat</span>
+        </div>
+        <div class="dropdown" id="ddNovaLokTip">
+          <button class="field-dropdown price-scope-dropdown" type="button">
+            <span data-label>Satnica</span>
+            <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="dropdown-menu right"></div>
+        </div>
+      </div>
+      <div class="field-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+        Vrijedi od danas. Buduće cijene dodajete u detaljima lokacije.
+      </div>
+    </div>
+  </div>
+
+  <footer class="drawer-footer">
+    <div class="spacer"></div>
+    <button class="btn-secondary" type="button" id="novaLokDrawerCancel">Odustani</button>
+    <button class="btn-primary" type="button" id="novaLokDrawerSave">Spremi</button>
   </footer>
 </aside>
 
@@ -4825,6 +4952,35 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && locDrawer.classList.contains('open')) closeLocDrawer();
   });
+
+  // Nova lokacija drawer
+  const novaLokDrawer = document.getElementById('novaLokDrawer');
+  const novaLokOverlay = document.getElementById('novaLokOverlay');
+  const openNovaLokDrawer = () => {
+    document.getElementById('novaLokNameInput').value = '';
+    document.getElementById('novaLokAddressInput').value = '';
+    document.getElementById('novaLokCijenaInput').value = '0.00';
+    novaLokDrawer.classList.add('open');
+    novaLokDrawer.setAttribute('aria-hidden', 'false');
+    novaLokOverlay.classList.add('open');
+    novaLokOverlay.setAttribute('aria-hidden', 'false');
+    setTimeout(() => document.getElementById('novaLokNameInput').focus(), 220);
+  };
+  const closeNovaLokDrawer = () => {
+    novaLokDrawer.classList.remove('open');
+    novaLokDrawer.setAttribute('aria-hidden', 'true');
+    novaLokOverlay.classList.remove('open');
+    novaLokOverlay.setAttribute('aria-hidden', 'true');
+  };
+  document.getElementById('btnNovaLokacija').addEventListener('click', openNovaLokDrawer);
+  document.getElementById('novaLokDrawerClose').addEventListener('click', closeNovaLokDrawer);
+  document.getElementById('novaLokDrawerCancel').addEventListener('click', closeNovaLokDrawer);
+  document.getElementById('novaLokDrawerSave').addEventListener('click', closeNovaLokDrawer);
+  novaLokOverlay.addEventListener('click', closeNovaLokDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && novaLokDrawer.classList.contains('open')) closeNovaLokDrawer();
+  });
+  setupDropdown(document.getElementById('ddNovaLokTip'), ['Satnica', 'Dnevnica', 'Fiksno mjesečno']);
 
   document.getElementById('locTagsSelect').addEventListener('click', (e) => {
     const rm = e.target.closest('[data-loc-tag-remove]');

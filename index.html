@@ -71,6 +71,7 @@
   }
 
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
@@ -1635,6 +1636,209 @@
   }
   .wizard-footer .spacer { flex: 1; }
 
+  /* ---------- Predlošci — tiled cards ---------- */
+  .tpl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .tpl-card {
+    background: var(--surface-default);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-m);
+    display: flex;
+    flex-direction: column;
+    overflow: visible;                 /* dropdown menu smije van kartice */
+    transition: border-color 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .tpl-card:hover {
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-subtle);
+  }
+  .tpl-card-body {
+    padding: 18px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  .tpl-card-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-right: 32px;               /* prostor za ⋯ dropdown u kutu */
+  }
+  .tpl-card-title {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-body);
+    letter-spacing: 0;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .tpl-card-loc {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--text-caption);
+    font-size: 12.5px;
+    line-height: 16px;
+  }
+  .tpl-card-loc svg { color: var(--icon-muted); flex-shrink: 0; }
+  .tpl-card-loc.all { font-style: italic; }
+  .tpl-card-desc {
+    color: var(--text-body);
+    font-size: 13px;
+    line-height: 18px;
+    margin: 0;
+    min-height: 36px;                  /* buffer za 2 linije, dopušta i treću */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tpl-card-desc.empty { color: var(--text-caption); font-style: italic; }
+  /* .dropdown iz DS-a ima position:relative — override s dvije-klase specificity */
+  .dropdown.tpl-card-more {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+  }
+  .dropdown.tpl-card-more > .icon-btn-tooltip { width: 28px; height: 28px; }
+
+  /* Predlošci wizard — Step 2 header + empty state */
+  .tpl-wiz-week-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .tpl-wiz-week-head h3 { margin: 0; }
+  .tpl-wiz-week-hint {
+    color: var(--text-caption);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .tpl-wiz-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: 64px 32px;
+    background: var(--surface-default);
+    border: 1px dashed var(--border-default);
+    border-radius: var(--r-m);
+  }
+  .tpl-wiz-empty-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--surface-primary-light);
+    color: var(--text-primary);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 4px;
+  }
+  .tpl-wiz-empty-title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--text-heading);
+    letter-spacing: -0.2px;
+  }
+  .tpl-wiz-empty-lead {
+    color: var(--text-caption);
+    font-size: 13.5px;
+    line-height: 20px;
+    max-width: 360px;
+    margin-bottom: 10px;
+  }
+  .tpl-wiz-add-row {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 4px;
+  }
+  /* Day row (inline: Dan | Od | Do | Obilazak | actions) */
+  .tpl-day-row {
+    background: var(--surface-default);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-m);
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr 0.9fr 1.4fr auto;
+    gap: 16px;
+    align-items: start;
+  }
+  .tpl-day-row .form-group { gap: 6px; margin: 0; }
+  .tpl-day-row .form-label {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-heading);
+  }
+  .tpl-day-row .form-field {
+    padding: 8px 12px;
+    min-height: 36px;
+  }
+  .tpl-day-row .field-hint { padding-left: 0; margin-top: 2px; }
+  .tpl-day-row .obilazak-cell {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .tpl-day-row .obilazak-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 12px;
+    background: var(--surface-muted);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-s);
+    min-height: 36px;
+  }
+  .tpl-day-row .obilazak-row strong {
+    color: var(--text-body); font-weight: 500; font-size: 13.5px;
+    flex: 1;
+  }
+  .tpl-day-row .day-row-actions {
+    display: flex; gap: 4px;
+    align-self: center;               /* vertikalno centrirano s input row-om */
+  }
+  .tpl-day-row .day-row-actions .icon-btn-tooltip { width: 32px; height: 32px; }
+  .tpl-day-row .day-row-actions .icon-btn-tooltip.danger { color: var(--text-error); }
+  .tpl-card-footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 12px 16px 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--surface-default);
+    border-bottom-left-radius: var(--r-m);
+    border-bottom-right-radius: var(--r-m);
+  }
+  .tpl-shifts-count {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--text-heading);
+    font-size: 13px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .tpl-shifts-count svg { color: var(--icon-muted); flex-shrink: 0; }
+  .tpl-shifts-count.zero { color: var(--text-caption); font-weight: 400; }
+  .tpl-card-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    background: var(--surface-default);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--r-s);
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .tpl-card-cta:hover { background: var(--surface-primary-ghost); }
+  .tpl-card-cta svg { color: currentColor; flex-shrink: 0; }
+
   /* ---------- Page routing ---------- */
   .page-view { display: flex; flex-direction: column; }
   .page-view[hidden] { display: none; }
@@ -2472,7 +2676,7 @@
       <a href="#" data-nav="dogadjaji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Događaji</a>
       <a href="#" data-nav="zaposlenici"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>Zaposlenici</a>
       <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0114 0"/><circle cx="17" cy="10" r="3"/><path d="M14 21c1-3 4-5 7-5"/></svg>Upravitelji</a>
-      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h6"/></svg>Predlošci</a>
+      <a href="#" data-nav="predlosci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h6"/></svg>Predlošci</a>
       <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-8-8V4h8z"/><circle cx="9" cy="9" r="1.5"/></svg>Oznake</a>
       <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"/></svg>Podružnice</a>
       <div class="spacer"></div>
@@ -2855,7 +3059,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13M5 10l7-7 7 7M4 21h16"/></svg>
               Uvezi
             </button>
-            <button class="btn-primary" type="button">
+            <button class="btn-primary" type="button" id="btnNoviZaposlenik">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
               Novi zaposlenik
             </button>
@@ -3023,7 +3227,7 @@
             <div class="subtitle"><span id="dogCount">12</span> događaja</div>
           </div>
           <div style="display:flex; gap:12px; flex-shrink:0">
-            <button class="btn-primary" type="button">
+            <button class="btn-primary" type="button" id="btnNoviDogadjaj">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
               Novi događaj
             </button>
@@ -3208,6 +3412,36 @@
         <div class="tab-panel" data-panel="cijene-dog" hidden><div class="tab-placeholder">Cijene — TBD (kasnije definiramo).</div></div>
         <div class="tab-panel" data-panel="zaposlenici-dog" hidden><div class="tab-placeholder">Zaposlenici — u pripremi.</div></div>
         <div class="tab-panel" data-panel="tocke-dog" hidden><div class="tab-placeholder">Kontrolne točke — u pripremi.</div></div>
+      </div>
+    </section>
+
+    <!-- ========== PREDLOŠCI page ========== -->
+    <section class="page-view" data-page="predlosci" hidden>
+      <div class="page-header">
+        <div class="page-heading">
+          <div>
+            <h1>Predlošci</h1>
+            <div class="subtitle"><span id="tplCount">7</span> predložaka</div>
+          </div>
+          <div style="display:flex; gap:12px; flex-shrink:0">
+            <button class="btn-primary" type="button" id="btnNoviPredlozak">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Novi predložak
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar" role="toolbar" aria-label="Filteri predložaka">
+          <div class="search-field">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input type="text" placeholder="Pretraži predloške…" id="tplSearch">
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="tpl-grid" id="tplGrid"></div>
+        <div class="empty-note" id="tplEmpty" hidden>Nema predložaka koji odgovaraju pretraživanju.</div>
       </div>
     </section>
   </main>
@@ -3512,6 +3746,178 @@
   </footer>
 </aside>
 
+<!-- Novi zaposlenik drawer -->
+<div class="drawer-overlay" id="noviZapOverlay" aria-hidden="true"></div>
+<aside class="drawer" id="noviZapDrawer" role="dialog" aria-modal="true" aria-labelledby="noviZapDrawerTitle" aria-hidden="true">
+  <header class="drawer-header">
+    <div class="drawer-title">
+      <h2 id="noviZapDrawerTitle">Novi zaposlenik</h2>
+    </div>
+    <button class="drawer-close" type="button" aria-label="Zatvori" id="noviZapDrawerClose">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </header>
+
+  <div class="drawer-body">
+    <div class="form-group">
+      <label class="form-label" for="noviZapNameInput">Ime i prezime <span class="req">*</span></label>
+      <div class="form-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        <input type="text" id="noviZapNameInput" placeholder="Ivan Horvat">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="noviZapIdInput">Identifikator <span class="req">*</span></label>
+      <div class="form-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2.2"/><path d="M14 10h5M14 14h4"/></svg>
+        <input type="text" id="noviZapIdInput" value="ID-0001">
+      </div>
+      <div class="field-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+        Sljedeći slobodni identifikator. Možete ga promijeniti.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="noviZapPhoneInput">Broj telefona <span class="req">*</span></label>
+      <div class="form-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-3 2a12 12 0 006 6l2-3 5 2v4a2 2 0 01-2 2A18 18 0 013 6a2 2 0 012-2z"/></svg>
+        <input type="tel" id="noviZapPhoneInput" placeholder="+385 91 1234 567">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Oznake</label>
+      <div class="people-select" id="noviZapTagsSelect">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--icon-muted); flex-shrink: 0"><path d="M20 12l-8 8-8-8V4h8z"/><circle cx="9" cy="9" r="1.5"/></svg>
+        <button class="people-add-btn" type="button" id="noviZapTagAdd">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Dodajte oznake
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="noviZapCijenaInput">Cijena <span class="req">*</span></label>
+      <div class="price-field-row">
+        <div class="price-input-wrap">
+          <input type="text" id="noviZapCijenaInput" value="0.00" inputmode="decimal">
+          <span class="price-unit-pill">€/sat</span>
+        </div>
+        <div class="dropdown" id="ddNoviZapTip">
+          <button class="field-dropdown price-scope-dropdown" type="button">
+            <span data-label>Satnica</span>
+            <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="dropdown-menu right"></div>
+        </div>
+      </div>
+      <div class="field-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+        Vrijedi od danas. Buduće cijene i fiksne troškove dodajete u detaljima zaposlenika.
+      </div>
+    </div>
+  </div>
+
+  <footer class="drawer-footer">
+    <div class="spacer"></div>
+    <button class="btn-secondary" type="button" id="noviZapDrawerCancel">Odustani</button>
+    <button class="btn-primary" type="button" id="noviZapDrawerSave">Spremi</button>
+  </footer>
+</aside>
+
+<!-- Novi događaj drawer -->
+<div class="drawer-overlay" id="noviDogOverlay" aria-hidden="true"></div>
+<aside class="drawer" id="noviDogDrawer" role="dialog" aria-modal="true" aria-labelledby="noviDogDrawerTitle" aria-hidden="true">
+  <header class="drawer-header">
+    <div class="drawer-title">
+      <h2 id="noviDogDrawerTitle">Novi događaj</h2>
+    </div>
+    <button class="drawer-close" type="button" aria-label="Zatvori" id="noviDogDrawerClose">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </header>
+
+  <div class="drawer-body">
+    <div class="form-group">
+      <label class="form-label" for="noviDogNameInput">Naziv <span class="req">*</span></label>
+      <div class="form-input-wrap">
+        <input type="text" id="noviDogNameInput" placeholder="Adventski sajam">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="noviDogAddressInput">Adresa <span class="req">*</span></label>
+      <div class="form-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <input type="text" id="noviDogAddressInput" placeholder="Trg bana Jelačića 1">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="noviDogTrajanjeInput">Trajanje <span class="req">*</span></label>
+      <div class="form-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+        <input type="text" id="noviDogTrajanjeInput" placeholder="Odaberite datume" readonly style="cursor:pointer">
+      </div>
+      <div class="field-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+        Smjene se raspoređuju unutar ovog razdoblja.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Oznake</label>
+      <div class="people-select" id="noviDogTagsSelect">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--icon-muted); flex-shrink: 0"><path d="M20 12l-8 8-8-8V4h8z"/><circle cx="9" cy="9" r="1.5"/></svg>
+        <button class="people-add-btn" type="button" id="noviDogTagAdd">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Dodajte oznake
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Podružnice</label>
+      <div class="people-select" id="noviDogPodrSelect">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--icon-muted); flex-shrink: 0"><circle cx="12" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M12 8v3M12 11l-6 5M12 11l6 5"/></svg>
+        <button class="people-add-btn" type="button" id="noviDogPodrAdd">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Dodajte podružnice
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="noviDogCijenaInput">Cijena <span class="req">*</span></label>
+      <div class="price-field-row">
+        <div class="price-input-wrap">
+          <input type="text" id="noviDogCijenaInput" value="0.00" inputmode="decimal">
+          <span class="price-unit-pill" id="noviDogPriceUnit">€/dan</span>
+        </div>
+        <div class="dropdown" id="ddNoviDogTip">
+          <button class="field-dropdown price-scope-dropdown" type="button">
+            <span data-label>Dnevnica</span>
+            <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="dropdown-menu right"></div>
+        </div>
+      </div>
+      <div class="field-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+        Vrijedi od početka događaja. Buduće cijene dodajete u detaljima.
+      </div>
+    </div>
+  </div>
+
+  <footer class="drawer-footer">
+    <div class="spacer"></div>
+    <button class="btn-secondary" type="button" id="noviDogDrawerCancel">Odustani</button>
+    <button class="btn-primary" type="button" id="noviDogDrawerSave">Spremi</button>
+  </footer>
+</aside>
+
 <!-- Edit događaja drawer -->
 <div class="drawer-overlay" id="dogOverlay" aria-hidden="true"></div>
 <aside class="drawer" id="editDogDrawer" role="dialog" aria-modal="true" aria-labelledby="dogDrawerTitle" aria-hidden="true">
@@ -3714,6 +4120,105 @@
     <div class="spacer"></div>
     <button class="btn-secondary" type="button" id="wizardPrev" disabled>Nazad</button>
     <button class="btn-primary" type="button" id="wizardNext" disabled>Nastavi</button>
+  </footer>
+</div>
+
+<!-- Novi predložak wizard -->
+<div class="wizard-overlay" id="tplWizardOverlay" aria-hidden="true">
+  <header class="wizard-header">
+    <button class="wizard-back" type="button" id="tplWizardClose" aria-label="Zatvori wizard">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="wizard-title">
+      <h2>Novi predložak</h2>
+      <div class="subtitle">Definirajte predložak koji ćete primijeniti na razdoblje kasnije.</div>
+    </div>
+  </header>
+
+  <div class="wizard-shell">
+    <nav class="wizard-rail" aria-label="Koraci">
+      <ul class="step-nav" id="tplStepNav">
+        <li><button class="step-nav-item active" data-tplstep="1" type="button"><span class="step-nav-circle"><span class="num">1</span><svg class="check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span>Osnovno</span></button></li>
+        <li><button class="step-nav-item" data-tplstep="2" type="button" disabled><span class="step-nav-circle"><span class="num">2</span><svg class="check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><span>Tjedni raspored</span></button></li>
+      </ul>
+    </nav>
+
+    <main class="wizard-content">
+      <!-- Step 1: Osnovno -->
+      <section class="wizard-panel active" data-tplpanel="1">
+        <div>
+          <h3>Osnovne informacije</h3>
+          <p class="panel-lead">Naziv i opis pomažu prepoznati predložak u listi. Lokacija je opcionalna.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tplWizName">Naziv <span class="req">*</span></label>
+          <div class="form-input-wrap">
+            <input type="text" id="tplWizName" placeholder="Vikend smjene">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="tplWizDesc">Opis</label>
+          <div class="form-input-wrap">
+            <input type="text" id="tplWizDesc" placeholder="Dvije smjene subotom i nedjeljom">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Lokacija</label>
+          <div class="dropdown" id="ddTplWizLoc">
+            <button class="form-field" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16V10L12 3 4 10z"/><path d="M9 22v-8h6v8"/></svg>
+              <span class="value" data-label>Sve lokacije</span>
+              <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="dropdown-menu"></div>
+          </div>
+          <div class="field-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+            Bez lokacije predložak nema obilazak.
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2: Tjedni raspored -->
+      <section class="wizard-panel" data-tplpanel="2">
+        <div class="tpl-wiz-week-head">
+          <h3>Tjedni raspored</h3>
+          <span class="tpl-wiz-week-hint">Ljude birate kad predložak primijenite.</span>
+        </div>
+
+        <div class="tpl-wiz-empty" id="tplWizEmpty">
+          <div class="tpl-wiz-empty-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+          </div>
+          <div class="tpl-wiz-empty-title">Tjedan je prazan</div>
+          <div class="tpl-wiz-empty-lead">Dodajte smjenu za svaki dan koji želite pokriti. Isti dan možete kopirati.</div>
+          <button class="btn-secondary-brand" type="button" id="tplWizAddFirst">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Dodaj smjenu
+          </button>
+        </div>
+
+        <div class="day-cards" id="tplWizDays" hidden></div>
+
+        <div class="tpl-wiz-add-row" id="tplWizAddRow" hidden>
+          <button class="btn-secondary" type="button" id="tplWizAddMore">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Dodaj još jedan dan
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="wizard-footer">
+    <button class="btn-secondary" type="button" id="tplWizardCancel">Odustani</button>
+    <div class="spacer"></div>
+    <button class="btn-secondary" type="button" id="tplWizardPrev" disabled>Nazad</button>
+    <button class="btn-primary" type="button" id="tplWizardNext" disabled>Nastavi</button>
+    <button class="btn-primary" type="button" id="tplWizardSave" hidden>Spremi predložak</button>
   </footer>
 </div>
 
@@ -4982,6 +5487,70 @@
   });
   setupDropdown(document.getElementById('ddNovaLokTip'), ['Satnica', 'Dnevnica', 'Fiksno mjesečno']);
 
+  // Novi zaposlenik drawer
+  const noviZapDrawer = document.getElementById('noviZapDrawer');
+  const noviZapOverlay = document.getElementById('noviZapOverlay');
+  const openNoviZapDrawer = () => {
+    document.getElementById('noviZapNameInput').value = '';
+    document.getElementById('noviZapIdInput').value = 'ID-0001';
+    document.getElementById('noviZapPhoneInput').value = '';
+    document.getElementById('noviZapCijenaInput').value = '0.00';
+    noviZapDrawer.classList.add('open');
+    noviZapDrawer.setAttribute('aria-hidden', 'false');
+    noviZapOverlay.classList.add('open');
+    noviZapOverlay.setAttribute('aria-hidden', 'false');
+    setTimeout(() => document.getElementById('noviZapNameInput').focus(), 220);
+  };
+  const closeNoviZapDrawer = () => {
+    noviZapDrawer.classList.remove('open');
+    noviZapDrawer.setAttribute('aria-hidden', 'true');
+    noviZapOverlay.classList.remove('open');
+    noviZapOverlay.setAttribute('aria-hidden', 'true');
+  };
+  document.getElementById('btnNoviZaposlenik').addEventListener('click', openNoviZapDrawer);
+  document.getElementById('noviZapDrawerClose').addEventListener('click', closeNoviZapDrawer);
+  document.getElementById('noviZapDrawerCancel').addEventListener('click', closeNoviZapDrawer);
+  document.getElementById('noviZapDrawerSave').addEventListener('click', closeNoviZapDrawer);
+  noviZapOverlay.addEventListener('click', closeNoviZapDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && noviZapDrawer.classList.contains('open')) closeNoviZapDrawer();
+  });
+  setupDropdown(document.getElementById('ddNoviZapTip'), ['Satnica', 'Dnevnica', 'Fiksno mjesečno']);
+
+  // Novi događaj drawer
+  const noviDogDrawer = document.getElementById('noviDogDrawer');
+  const noviDogOverlay = document.getElementById('noviDogOverlay');
+  const openNoviDogDrawer = () => {
+    document.getElementById('noviDogNameInput').value = '';
+    document.getElementById('noviDogAddressInput').value = '';
+    document.getElementById('noviDogTrajanjeInput').value = '';
+    document.getElementById('noviDogCijenaInput').value = '0.00';
+    noviDogDrawer.classList.add('open');
+    noviDogDrawer.setAttribute('aria-hidden', 'false');
+    noviDogOverlay.classList.add('open');
+    noviDogOverlay.setAttribute('aria-hidden', 'false');
+    setTimeout(() => document.getElementById('noviDogNameInput').focus(), 220);
+  };
+  const closeNoviDogDrawer = () => {
+    noviDogDrawer.classList.remove('open');
+    noviDogDrawer.setAttribute('aria-hidden', 'true');
+    noviDogOverlay.classList.remove('open');
+    noviDogOverlay.setAttribute('aria-hidden', 'true');
+  };
+  document.getElementById('btnNoviDogadjaj').addEventListener('click', openNoviDogDrawer);
+  document.getElementById('noviDogDrawerClose').addEventListener('click', closeNoviDogDrawer);
+  document.getElementById('noviDogDrawerCancel').addEventListener('click', closeNoviDogDrawer);
+  document.getElementById('noviDogDrawerSave').addEventListener('click', closeNoviDogDrawer);
+  noviDogOverlay.addEventListener('click', closeNoviDogDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && noviDogDrawer.classList.contains('open')) closeNoviDogDrawer();
+  });
+  const noviDogPriceOpts = ['Dnevnica', 'Satnica', 'Fiksno'];
+  const noviDogPriceUnits = { 'Dnevnica': '€/dan', 'Satnica': '€/sat', 'Fiksno': '€' };
+  setupDropdown(document.getElementById('ddNoviDogTip'), noviDogPriceOpts, (idx) => {
+    document.getElementById('noviDogPriceUnit').textContent = noviDogPriceUnits[noviDogPriceOpts[idx]];
+  });
+
   document.getElementById('locTagsSelect').addEventListener('click', (e) => {
     const rm = e.target.closest('[data-loc-tag-remove]');
     if (rm) {
@@ -5788,6 +6357,269 @@
   setupDropdown(document.getElementById('ddOznake'), ['Sve oznake', ...uniqueOznake]);
   setupDropdown(document.getElementById('ddPodrLok'), ['Sve podružnice', ...uniquePodr]);
   setupDropdown(document.getElementById('ddTip'), ['Svi obračuni', 'Satnica', 'Dnevnica']);
+
+  // ---- Predlošci page ----
+  const TPL_ROWS = [
+    { name: 'Jutarnja 6-14',    desc: 'Jutarnja smjena',       loc: 'Metro Zagreb 1', shifts: 7 },
+    { name: 'Nocna 22-6',       desc: 'Nocna smjena',          loc: 'Metro Zagreb 1', shifts: 7 },
+    { name: 'Popodnevna 14-22', desc: 'Popodnevna smjena',     loc: 'Metro Zagreb 1', shifts: 7 },
+    { name: 'Smjena 0-0',       desc: '24h smjena od ponoći',  loc: 'Metro Zagreb 1', shifts: 7 },
+    { name: 'Smjena 12-12',     desc: '24h smjena od podneva', loc: 'Metro Zagreb 1', shifts: 7 },
+    { name: 'Test',             desc: 'Jedan test',            loc: null,             shifts: 0 },
+    { name: 'Test jedan',       desc: 'Jes',                   loc: 'Arena Pula 4',   shifts: 0 },
+  ];
+
+  const plSmjena = (n) => {
+    const mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return 'smjena';
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'smjene';
+    return 'smjena';
+  };
+  const iconLocPin = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+  const iconCalSmall = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>`;
+  const iconCalPlus = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>`;
+  const iconTrashSmall = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13M10 11v7M14 11v7"/></svg>`;
+  const iconPencilSmall = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.06 4.94l4 4L7 20l-4 1 1-4z"/><path d="M12 6l4 4"/></svg>`;
+  const iconMore = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>`;
+
+  const renderTemplates = () => {
+    const q = (document.getElementById('tplSearch').value || '').trim().toLowerCase();
+    const rows = TPL_ROWS.filter(t =>
+      !q || t.name.toLowerCase().includes(q) || (t.desc || '').toLowerCase().includes(q) || (t.loc || '').toLowerCase().includes(q)
+    );
+    const grid = document.getElementById('tplGrid');
+    const empty = document.getElementById('tplEmpty');
+    document.getElementById('tplCount').textContent = TPL_ROWS.length;
+    if (rows.length === 0) {
+      grid.innerHTML = '';
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+    grid.innerHTML = rows.map((t, i) => {
+      const locLine = t.loc
+        ? `<span class="tpl-card-loc">${iconLocPin}${t.loc}</span>`
+        : `<span class="tpl-card-loc all">${iconLocPin}Sve lokacije</span>`;
+      const desc = t.desc
+        ? `<p class="tpl-card-desc">${t.desc}</p>`
+        : `<p class="tpl-card-desc empty">Bez opisa</p>`;
+      const countCls = t.shifts === 0 ? 'zero' : '';
+      return `
+        <article class="tpl-card">
+          <div class="dropdown tpl-card-more" id="ddTplMore${i}">
+            <button class="icon-btn-tooltip" type="button" data-tooltip="Više akcija" aria-label="Više akcija">${iconMore}</button>
+            <div class="dropdown-menu right"></div>
+          </div>
+          <div class="tpl-card-body">
+            <div class="tpl-card-head">
+              <h3 class="tpl-card-title">${t.name}</h3>
+              ${locLine}
+            </div>
+            ${desc}
+          </div>
+          <div class="tpl-card-footer">
+            <span class="tpl-shifts-count ${countCls}">${iconCalSmall}${t.shifts} ${plSmjena(t.shifts)}</span>
+            <button class="tpl-card-cta" type="button">${iconCalPlus}Kreiraj smjene</button>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    // wire ⋯ dropdowns
+    rows.forEach((_, i) => {
+      setupActionDropdown(document.getElementById(`ddTplMore${i}`), [
+        { icon: iconPencilSmall, label: 'Uredi', onClick: () => {} },
+        { icon: iconTrashSmall, label: 'Izbriši', onClick: () => {} },
+      ]);
+    });
+  };
+  renderTemplates();
+  document.getElementById('tplSearch').addEventListener('input', renderTemplates);
+
+  // ---- Novi predložak wizard ----
+  const TPL_DAY_NAMES = ['Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 'Petak', 'Subota', 'Nedjelja'];
+  const TPL_LOC_OPTS = ['Sve lokacije', ...LOCATIONS_ROWS.map(l => l.name)];
+
+  let tplWizState = { step: 1, name: '', desc: '', loc: 'Sve lokacije', days: [] };
+
+  const tplWizOverlay = document.getElementById('tplWizardOverlay');
+  const tplWizPanels = () => tplWizOverlay.querySelectorAll('.wizard-panel');
+  const tplWizStepBtns = () => tplWizOverlay.querySelectorAll('.step-nav-item');
+
+  const tplWizPickNextDay = () => {
+    const used = new Set(tplWizState.days.map(d => d.day));
+    return TPL_DAY_NAMES.find(d => !used.has(d)) || TPL_DAY_NAMES[0];
+  };
+
+  const shiftDurH = (from, to) => {
+    const [fh, fm] = from.split(':').map(Number);
+    const [th, tm] = to.split(':').map(Number);
+    let mins = (th * 60 + tm) - (fh * 60 + fm);
+    if (mins <= 0) mins += 24 * 60;
+    return (mins / 60).toFixed(2).replace('.', ',') + ' h';
+  };
+
+  const iconCopy = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>`;
+
+  const renderTplWizDays = () => {
+    const days = tplWizState.days;
+    const empty = document.getElementById('tplWizEmpty');
+    const list = document.getElementById('tplWizDays');
+    const addRow = document.getElementById('tplWizAddRow');
+    if (days.length === 0) {
+      empty.hidden = false;
+      list.hidden = true;
+      addRow.hidden = true;
+    } else {
+      empty.hidden = true;
+      list.hidden = false;
+      addRow.hidden = false;
+      list.innerHTML = days.map((d, i) => `
+        <div class="tpl-day-row" data-tpl-day="${i}">
+          <div class="form-group">
+            <label class="form-label">Dan</label>
+            <div class="dropdown" data-tpl-dd-day="${i}">
+              <button class="form-field" type="button">
+                <span class="value" data-label>${d.day}</span>
+                <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <div class="dropdown-menu"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Od</label>
+            <button class="form-field" type="button">
+              <span class="value">${d.from}</span>
+              <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Do</label>
+            <button class="form-field" type="button">
+              <span class="value">${d.to}</span>
+              <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="field-hint">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+              ${shiftDurH(d.from, d.to)}
+            </div>
+          </div>
+          <div class="obilazak-cell">
+            <label class="form-label">Obilazak</label>
+            <div class="obilazak-row">
+              <strong>Skeniranja</strong>
+              <button class="toggle-switch" type="button" role="switch" aria-checked="${d.scan}" data-tpl-day-scan="${i}"></button>
+            </div>
+            <div class="field-hint">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg>
+              ${d.scan
+                ? `${Math.max(1, Math.round(parseFloat(shiftDurH(d.from, d.to).replace(',', '.'))))} točaka, jedna po satu`
+                : 'Bez obilaska'}
+            </div>
+          </div>
+          <div class="day-row-actions">
+            <button class="icon-btn-tooltip" type="button" data-tooltip="Dupliciraj" data-tpl-day-copy="${i}">${iconCopy}</button>
+            <button class="icon-btn-tooltip danger" type="button" data-tooltip="Ukloni" data-tpl-day-del="${i}">${iconTrashSmall}</button>
+          </div>
+        </div>
+      `).join('');
+      // wire Dan dropdown na svaku karticu
+      days.forEach((d, i) => {
+        setupDropdown(document.querySelector(`[data-tpl-dd-day="${i}"]`), TPL_DAY_NAMES, (idx) => {
+          tplWizState.days[i].day = TPL_DAY_NAMES[idx];
+        });
+      });
+    }
+    refreshTplWizNext();
+  };
+
+  const refreshTplWizNext = () => {
+    const nextBtn = document.getElementById('tplWizardNext');
+    const saveBtn = document.getElementById('tplWizardSave');
+    if (tplWizState.step === 1) {
+      nextBtn.hidden = false;
+      saveBtn.hidden = true;
+      nextBtn.disabled = !document.getElementById('tplWizName').value.trim();
+    } else {
+      nextBtn.hidden = true;
+      saveBtn.hidden = false;
+      saveBtn.disabled = tplWizState.days.length === 0;
+    }
+    document.getElementById('tplWizardPrev').disabled = tplWizState.step === 1;
+  };
+
+  const gotoTplWizStep = (n) => {
+    tplWizState.step = n;
+    tplWizPanels().forEach(p => p.classList.toggle('active', Number(p.dataset.tplpanel) === n));
+    tplWizStepBtns().forEach(b => {
+      const s = Number(b.dataset.tplstep);
+      b.classList.toggle('active', s === n);
+      b.classList.toggle('done', s < n);
+      b.classList.toggle('reached', s <= n);
+      b.disabled = s > n && !(s === 2 && document.getElementById('tplWizName').value.trim());
+    });
+    refreshTplWizNext();
+  };
+
+  const openTplWizard = () => {
+    tplWizState = { step: 1, name: '', desc: '', loc: 'Sve lokacije', days: [] };
+    document.getElementById('tplWizName').value = '';
+    document.getElementById('tplWizDesc').value = '';
+    document.querySelector('#ddTplWizLoc [data-label]').textContent = 'Sve lokacije';
+    renderTplWizDays();
+    gotoTplWizStep(1);
+    tplWizOverlay.classList.add('open');
+    tplWizOverlay.setAttribute('aria-hidden', 'false');
+    setTimeout(() => document.getElementById('tplWizName').focus(), 220);
+  };
+  const closeTplWizard = () => {
+    tplWizOverlay.classList.remove('open');
+    tplWizOverlay.setAttribute('aria-hidden', 'true');
+  };
+
+  document.getElementById('btnNoviPredlozak').addEventListener('click', openTplWizard);
+  document.getElementById('tplWizardClose').addEventListener('click', closeTplWizard);
+  document.getElementById('tplWizardCancel').addEventListener('click', closeTplWizard);
+  document.getElementById('tplWizardSave').addEventListener('click', closeTplWizard);
+  document.getElementById('tplWizardNext').addEventListener('click', () => gotoTplWizStep(2));
+  document.getElementById('tplWizardPrev').addEventListener('click', () => gotoTplWizStep(1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && tplWizOverlay.classList.contains('open')) closeTplWizard();
+  });
+
+  document.getElementById('tplWizName').addEventListener('input', refreshTplWizNext);
+  setupDropdown(document.getElementById('ddTplWizLoc'), TPL_LOC_OPTS, (idx) => {
+    tplWizState.loc = TPL_LOC_OPTS[idx];
+  });
+
+  const addTplDay = () => {
+    tplWizState.days.push({ day: tplWizPickNextDay(), from: '06:00', to: '14:00', scan: false });
+    renderTplWizDays();
+  };
+  document.getElementById('tplWizAddFirst').addEventListener('click', addTplDay);
+  document.getElementById('tplWizAddMore').addEventListener('click', addTplDay);
+
+  document.getElementById('tplWizDays').addEventListener('click', (e) => {
+    const del = e.target.closest('[data-tpl-day-del]');
+    if (del) {
+      tplWizState.days.splice(Number(del.dataset.tplDayDel), 1);
+      renderTplWizDays();
+      return;
+    }
+    const copy = e.target.closest('[data-tpl-day-copy]');
+    if (copy) {
+      const src = tplWizState.days[Number(copy.dataset.tplDayCopy)];
+      tplWizState.days.push({ ...src, day: tplWizPickNextDay() });
+      renderTplWizDays();
+      return;
+    }
+    const scan = e.target.closest('[data-tpl-day-scan]');
+    if (scan) {
+      tplWizState.days[Number(scan.dataset.tplDayScan)].scan = !tplWizState.days[Number(scan.dataset.tplDayScan)].scan;
+      renderTplWizDays();
+      return;
+    }
+  });
 
   // ---- Sidebar page routing ----
   const setPage = (page) => {
